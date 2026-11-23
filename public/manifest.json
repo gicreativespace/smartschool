@@ -2,9 +2,10 @@
   "name": "SchoolOS Digital Campus",
   "short_name": "SchoolOS",
   "description": "School management and parent communication PWA",
-  "start_url": "/",
+  "start_url": "/smartschool/",
+  "scope": "/smartschool/",
   "display": "standalone",
   "background_color": "#f4f6fb",
-  "theme_color": "#101b35",
+  "theme_color": "#247db5",
   "icons": []
 }
