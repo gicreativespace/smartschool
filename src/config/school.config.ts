@@ -1,7 +1,7 @@
 
 export const schoolConfig = {
   // Application name
-  appName: 'Sri Viswa',
+  appName: 'SmartSchool',
 
   // School details – CHANGE THESE
   schoolName: 'Sri Viswa Educational Institutions',
@@ -17,7 +17,7 @@ export const schoolConfig = {
   academicYear: '2026–27',
 
   // Add school logo path when available
-  logoPath: '',
+  logoPath: 'assets/school/school-logo.png',
   logoAlt: 'Sri Viswa Educational Institutions logo',
 
   // Demo mode
