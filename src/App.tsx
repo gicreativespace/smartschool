@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Activity, ArrowDownToLine, ArrowLeft, Bell, BookOpen, Bus, CalendarDays, Check, ChevronDown, CircleHelp, ClipboardCheck, Clock3, CreditCard, FileText, GraduationCap, LayoutDashboard, LogOut, Menu, Moon, MoreHorizontal, Plus, Search, Settings, ShieldCheck, Sun, Users, Wallet, X, Sparkles, Megaphone, TrendingUp, UserRound, CheckCircle2, XCircle, Globe2 } from 'lucide-react'
 import { roleMenus, roleNames, type Role, type RecordItem } from './data/seed'
+import { schoolConfig } from './config/school.config'
 import { loadStore, saveStore, exportCSV, downloadPoster, type Store } from './lib/storage'
 
 const iconMap:Record<string,any> = {Overview:LayoutDashboard,Attendance:ClipboardCheck,Approvals:ShieldCheck,'Notice Board':Bell,'E-Diary':BookOpen,'Create Notice':Megaphone,'My Submissions':FileText,'Manage Staff':Users,Students:GraduationCap,'Exam Schedule':CalendarDays,'Exam Syllabus':BookOpen,'School Calendar':CalendarDays,'Smart Learning':Sparkles,Settings:Settings,'Class Room':GraduationCap,Announcements:Megaphone,'Events & Achievements':Sparkles,'School Timetable':Clock3,'Apply Leave':CalendarDays,'Notes for Students':FileText,'Fee Details':Wallet,'Fee Dues':CreditCard,'Exam Marks':TrendingUp,'Bus Routes':Bus,'My Children':Users,'View Diary':BookOpen,'View Attendance':ClipboardCheck,'Fees Status':Wallet,'Class Notes':FileText,Events:Sparkles,'School Achievements':Sparkles}
@@ -76,8 +77,8 @@ export default function App() {
   const pageIcon=iconMap[page]||FileText
   return <div className={dark?'app dark':'app'}>
     <aside className={`sidebar ${menuOpen?'open':''}`}>
-      <div className="brand"><div className="brand-mark"><GraduationCap size={23}/></div><div><b>School<span>OS</span></b><small>DIGITAL CAMPUS</small></div><button className="mobile-close icon-btn" onClick={()=>setMenuOpen(false)}><X size={18}/></button></div>
-      <div className="school-chip"><div className="school-avatar">SV</div><div><b>Sri Viswa EM School</b><small>Palakollu · 2026–27</small></div><ChevronDown size={15}/></div>
+      <div className="brand"><div className="brand-mark"><GraduationCap size={23}/></div><div><b>SmartSchool</b><small>DIGITAL CAMPUS</small></div><button className="mobile-close icon-btn" onClick={()=>setMenuOpen(false)}><X size={18}/></button></div>
+      <div className="school-chip"><div className="school-avatar">{schoolConfig.initials}</div><div><b>{schoolConfig.shortName}</b><small>{schoolConfig.locationLabel} · {schoolConfig.academicYear}</small></div><ChevronDown size={15}/></div>
       <div className="nav-label">WORKSPACE</div>
       <nav>{nav.map(item=>{const I=iconMap[item]||FileText;return <button key={item} className={`nav-item ${page===item?'active':''}`} onClick={()=>{setPage(item);setSearch('');setMenuOpen(false)}}><I size={18}/><span>{item}</span>{item==='Approvals'&&pending>0&&<em>{pending}</em>}</button>})}</nav>
       <div className="sidebar-bottom"><div className="help-card"><div className="help-icon"><CircleHelp size={18}/></div><b>Need a hand?</b><p>Explore your workspace and get things done.</p><button onClick={()=>setToast('Help centre will be connected in a later phase')}>Help centre <ArrowLeft size={14}/></button></div><div className="profile-mini"><div className="profile-avatar">{userName.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><b>{userName}</b><small>{roleNames[role]}</small></div><button className="icon-btn" onClick={doLogout}><LogOut size={17}/></button></div></div>
@@ -139,7 +140,7 @@ function Overview({role,userName,pending,store,setPage,setModal,allStudents}:{ro
   return <>
     <section className="dashboard-hero">
       <div className="dashboard-hero-copy">
-        <div className="hero-school-label"><span className="hero-school-mark"><GraduationCap size={17}/></span> SRI VISWA EDUCATIONAL INSTITUTIONS</div>
+        <div className="hero-school-label"><span className="hero-school-mark"><GraduationCap size={17}/></span> {schoolConfig.schoolName.toUpperCase()}</div>
         <div className="hero-date"><CalendarDays size={14}/>{todayLabel}</div>
         <h1>Welcome, {userName.split(' ')[0]}!</h1>
         <p>{roleSubtitle[role]}</p>
@@ -212,7 +213,7 @@ function CreateNotice({onSave}:{onSave:(i:RecordItem)=>void}) {
 
 function Children({selected,setSelected}:{selected:string;setSelected:(s:string)=>void}) {
   const kids=['Aarav Kumar','Ananya Rao']
-  return <><div className="module-heading"><div><div className="eyebrow">FAMILY PORTAL</div><h1>My children</h1><p>Choose a child to view their school information.</p></div></div><div className="children-grid">{kids.map((kid,i)=><button key={kid} onClick={()=>setSelected(kid)} className={`child-card ${selected===kid?'selected':''}`}><div className={`child-avatar child-${i}`}>{kid.split(' ').map(x=>x[0]).join('')}</div><div><b>{kid}</b><span>Grade {i===0?'6 · A':'6 · A'} · Sri Viswa EM School</span></div><span className="child-check">{selected===kid?<Check size={17}/>:''}</span></button>)}</div><div className="selected-child-note"><CheckCircle2 size={17}/> Currently viewing <b>{selected}</b>’s information.</div></>
+  return <><div className="module-heading"><div><div className="eyebrow">FAMILY PORTAL</div><h1>My children</h1><p>Choose a child to view their school information.</p></div></div><div className="children-grid">{kids.map((kid,i)=><button key={kid} onClick={()=>setSelected(kid)} className={`child-card ${selected===kid?'selected':''}`}><div className={`child-avatar child-${i}`}>{kid.split(' ').map(x=>x[0]).join('')}</div><div><b>{kid}</b><span>Grade {i===0?'6 · A':'6 · A'} · {schoolConfig.shortName}</span></div><span className="child-check">{selected===kid?<Check size={17}/>:''}</span></button>)}</div><div className="selected-child-note"><CheckCircle2 size={17}/> Currently viewing <b>{selected}</b>’s information.</div></>
 }
 
 function SettingsPage({dark,setDark,telugu,setTelugu,setToast}:{dark:boolean;setDark:(v:boolean)=>void;telugu:boolean;setTelugu:(v:boolean)=>void;setToast:(s:string)=>void}) {
