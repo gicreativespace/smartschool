@@ -1,7 +1,7 @@
 {
-  "name": "SmartSchool — Digital Campus",
-  "short_name": "SmartSchool",
-  "description": "School management and parent communication PWA",
+  "name": "Sri Viswa — Digital Campus",
+  "short_name": "Sri Viswa",
+  "description": "Sri Viswa school management and parent communication app",
   "start_url": "/smartschool/",
   "scope": "/smartschool/",
   "display": "standalone",
