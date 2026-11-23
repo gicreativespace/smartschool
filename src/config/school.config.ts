@@ -1,7 +1,7 @@
 
 export const schoolConfig = {
   // Application name
-  appName: 'SmartSchool',
+  appName: 'Sri Viswa',
 
   // School details – CHANGE THESE
   schoolName: 'Sri Viswa Educational Institutions',
