@@ -93,6 +93,10 @@ export default function App() {
       </div>
       <footer className="app-footer"><button onClick={()=>setModal({kind:'contact'})}>A GI creative space work</button><span>Inspired by Godavari</span></footer>
     </main>
+    <nav className="mobile-bottom-nav" aria-label="Primary navigation">
+      {nav.slice(0,4).map(item=>{const I=iconMap[item]||FileText;return <button key={item} className={`mobile-nav-item ${page===item?'active':''}`} onClick={()=>{setPage(item);setSearch('');setMenuOpen(false)}}><I size={19}/><span>{item}</span>{item==='Approvals'&&pending>0&&<em>{pending}</em>}</button>})}
+      <button className="mobile-nav-item" onClick={()=>setMenuOpen(true)}><Menu size={19}/><span>More</span></button>
+    </nav>
     {modal&&<Modal modal={modal} page={page} onClose={()=>setModal(null)} onSave={addItem} onStatus={changeStatus} setToast={setToast}/>}
     {toast&&<div className="toast"><CheckCircle2 size={17}/>{toast}</div>}
   </div>
