@@ -94,8 +94,8 @@ export default function App() {
       <footer className="app-footer"><button onClick={()=>setModal({kind:'contact'})}>A GI creative space work</button><span>Inspired by Godavari</span></footer>
     </main>
     <nav className="mobile-bottom-nav" aria-label="Primary navigation">
-      {nav.slice(0,4).map(item=>{const I=iconMap[item]||FileText;return <button key={item} className={`mobile-nav-item ${page===item?'active':''}`} onClick={()=>{setPage(item);setSearch('');setMenuOpen(false)}}><I size={19}/><span>{item}</span>{item==='Approvals'&&pending>0&&<em>{pending}</em>}</button>})}
-      <button className="mobile-nav-item" onClick={()=>setMenuOpen(true)}><Menu size={19}/><span>More</span></button>
+      {(role==='principal'?['Overview','Approvals','E-Diary','Notice Board']:role==='incharge'?['Overview','Attendance','E-Diary','My Submissions']:role==='teacher'?['Overview','E-Diary','My Submissions','Notice Board']:role==='office'?['Overview','Fee Dues','Notice Board','My Submissions']:['Overview','View Diary','Notice Board','View Attendance']).map(item=>{const I=iconMap[item]||FileText;return <button key={item} className={`mobile-nav-item ${page===item?'active':''}`} onClick={()=>{setPage(item);setSearch('');setMenuOpen(false)}}><I size={20}/><span>{item}</span>{item==='Approvals'&&pending>0&&<em>{pending}</em>}</button>})}
+      <button className="mobile-nav-item" onClick={()=>setMenuOpen(true)}><Menu size={20}/><span>More</span></button>
     </nav>
     {modal&&<Modal modal={modal} page={page} onClose={()=>setModal(null)} onSave={addItem} onStatus={changeStatus} setToast={setToast}/>}
     {toast&&<div className="toast"><CheckCircle2 size={17}/>{toast}</div>}
@@ -108,14 +108,79 @@ function Login({onLogin}:{onLogin:(r:Role,n:string)=>void}) {
 }
 
 function Overview({role,userName,pending,store,setPage,setModal,allStudents}:{role:Role;userName:string;pending:number;store:Store;setPage:(p:string)=>void;setModal:(m:any)=>void;allStudents:number}) {
-  const statData = role==='principal'?[['Total Students',String(allStudents),'Across all classes',Users],['Today’s Attendance','94.6%','+2.4% from yesterday',Activity],['Pending Approvals',String(pending),'Needs your attention',ClipboardCheck],['Fee Collection','78%','Current academic year',Wallet]]:
-  role==='parent'?[['Attendance','94.6%','This academic year',Activity],['Diary Updates','3','2 new since yesterday',BookOpen],['Fee Status','Paid','Term 1 completed',Wallet],['Upcoming Exams','02','Next exam in December',CalendarDays]]:
-  role==='office'?[['Fee Collection','78%','Current academic year',Wallet],['Outstanding','₹ 2.4L','Across active students',CreditCard],['Bus Routes','08','Active transport routes',Bus],['Student Records',String(allStudents),'In current sample',Users]]:
-  [['My Classes','04','Assigned classes',GraduationCap],['Today’s Attendance','94.6%','Across assigned classes',Activity],['Pending Items','02','Submissions to review',FileText],['Upcoming Events','03','On school calendar',CalendarDays]]
-  const quick=role==='principal'?['Approvals','Create Notice','Attendance','Manage Staff']:role==='parent'?['View Diary','View Attendance','Apply Leave','Notice Board']:role==='office'?['Fee Dues','Exam Marks','Bus Routes','Notice Board']:['E-Diary','Attendance','Announcements','Apply Leave']
-  return <><div className="welcome-row"><div><div className="eyebrow">MONDAY, 23 NOVEMBER 2026</div><h1>Good afternoon, {userName.split(' ')[0]} <span className="wave">✦</span></h1><p>{roleSubtitle[role]}</p></div><div className="welcome-actions"><button className="secondary-btn" onClick={()=>setPage('School Calendar')}><CalendarDays size={16}/> View calendar</button><button className="primary-btn" onClick={()=>setModal({kind:'new'})}><Plus size={17}/> Create new</button></div></div><div className="stat-grid">{statData.map(([label,value,caption,Icon]:any,i)=><div className="stat-card" key={label}><div className={`stat-icon stat-${i}`}><Icon size={19}/></div><div className="stat-label">{label}</div><div className="stat-value">{value}</div><div className="stat-caption">{caption}</div></div>)}</div><div className="section-heading"><div><h2>Your workspace</h2><p>Jump back into the things that matter today.</p></div><span className="today-pill"><span/> Live overview</span></div><div className="quick-grid">{quick.map((q,i)=>{const I=iconMap[q]||FileText;return <button className="quick-card" key={q} onClick={()=>setPage(q)}><div className={`quick-icon q-${i}`}><I size={20}/></div><b>{q}</b><small>{descriptions[q]||'Open this section and manage updates.'}</small><span className="quick-arrow">↗</span></button>})}</div><div className="bottom-grid"><div className="panel activity-panel"><div className="panel-head"><div><h3>Recent activity</h3><p>The latest updates from your school.</p></div><button className="text-btn" onClick={()=>setPage(role==='principal'?'Approvals':'Notice Board')}>View all <ArrowLeft size={14}/></button></div><div className="activity-list"><ActivityItem icon={BookOpen} title="Class diary submitted" detail="Priya Sharma · Grade 6A" time="10 min ago" color="purple"/><ActivityItem icon={Megaphone} title="New school announcement" detail="Annual Sports Day" time="35 min ago" color="blue"/><ActivityItem icon={CalendarDays} title="Calendar updated" detail="Parent–Teacher Meeting" time="1 hour ago" color="green"/></div></div><div className="panel quote-panel"><div className="quote-mark">“</div><div className="eyebrow">A THOUGHT FOR TODAY</div><h3>Education is the most powerful weapon which you can use to change the world.</h3><p>Nelson Mandela</p><div className="quote-bottom"><Sparkles size={15}/> A little inspiration, every day.</div></div></div><div className="dashboard-footnote"><ShieldCheck size={16}/> Your workspace is private to your role. Access and permissions are managed by your school administrator.</div></>
+  const statData = role==='principal'
+    ? [['Total Students',String(allStudents),'Across all classes',Users],['Today’s Attendance','94.6%','Across active classes',Activity],['Pending Approvals',String(pending),'Items needing review',ClipboardCheck],['Fee Collection','78%','Current academic year',Wallet]]
+    : role==='parent'
+    ? [['Attendance','94.6%','This academic year',Activity],['Diary Updates',String(store.diary.length),'Class updates available',BookOpen],['Fee Status','Paid','Term 1 status',Wallet],['Upcoming Exams',String(store.exams.length).padStart(2,'0'),'Scheduled examinations',CalendarDays]]
+    : role==='office'
+    ? [['Fee Collection','78%','Current academic year',Wallet],['Outstanding','₹ 2.4L','Across active students',CreditCard],['Bus Routes',String(store.buses.length).padStart(2,'0'),'Active transport routes',Bus],['Student Records',String(allStudents),'In current sample',Users]]
+    : [['My Classes','04','Assigned classes',GraduationCap],['Today’s Attendance','94.6%','Across assigned classes',Activity],['Pending Items',String(store.submissions.filter(x=>x.status==='Pending').length),'Your items to track',FileText],['Upcoming Events',String(store.events.length).padStart(2,'0'),'On school calendar',CalendarDays]]
+
+  const quick = role==='principal'
+    ? ['Approvals','E-Diary','Notice Board','My Submissions']
+    : role==='incharge'
+    ? ['E-Diary','Attendance','Notice Board','My Submissions']
+    : role==='teacher'
+    ? ['E-Diary','My Submissions','Notice Board','Announcements']
+    : role==='office'
+    ? ['Fee Dues','Notice Board','My Submissions','Bus Routes']
+    : ['Notice Board','View Diary','View Attendance','Fees Status']
+
+  const activitySource = role==='principal'
+    ? [{icon:ShieldCheck,item:store.approvals[0],label:'Approvals',color:'purple'},{icon:BookOpen,item:store.diary[0],label:'E-Diary',color:'blue'},{icon:Megaphone,item:store.notices[0],label:'Notice Board',color:'green'}]
+    : role==='parent'
+    ? [{icon:BookOpen,item:store.diary[0],label:'E-Diary',color:'blue'},{icon:Megaphone,item:store.notices[0],label:'Notice Board',color:'green'},{icon:Wallet,item:store.fees[0],label:'Fee update',color:'purple'}]
+    : role==='office'
+    ? [{icon:Wallet,item:store.fees[0],label:'Fee update',color:'green'},{icon:Megaphone,item:store.notices[0],label:'Notice Board',color:'blue'},{icon:FileText,item:store.submissions[0],label:'Submission',color:'purple'}]
+    : [{icon:BookOpen,item:store.diary[0],label:'E-Diary',color:'blue'},{icon:FileText,item:store.submissions[0],label:'Submission',color:'purple'},{icon:Megaphone,item:store.notices[0],label:'Notice Board',color:'green'}]
+  const activities = activitySource.filter(x=>x.item).slice(0,3)
+  const todayLabel = new Intl.DateTimeFormat('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date())
+
+  return <>
+    <section className="dashboard-hero">
+      <div className="dashboard-hero-copy">
+        <div className="hero-school-label"><span className="hero-school-mark"><GraduationCap size={17}/></span> SRI VISWA EDUCATIONAL INSTITUTIONS</div>
+        <div className="hero-date"><CalendarDays size={14}/>{todayLabel}</div>
+        <h1>Welcome, {userName.split(' ')[0]}!</h1>
+        <p>{roleSubtitle[role]}</p>
+        <div className="hero-quote"><span>“</span><b>Great schools build great futures.</b></div>
+      </div>
+      <div className="dashboard-hero-actions">
+        <button className="hero-btn hero-btn-soft" onClick={()=>setPage('Notice Board')}><Bell size={16}/> Notice board</button>
+        <button className="hero-btn hero-btn-primary" onClick={()=>setPage(role==='principal'?'Create Notice':role==='parent'?'View Diary':'E-Diary')}><Plus size={16}/>{role==='principal'?'Create notice':role==='parent'?'View diary':'Open E-Diary'}</button>
+      </div>
+      <div className="hero-decoration hero-decoration-one"/>
+      <div className="hero-decoration hero-decoration-two"/>
+    </section>
+
+    <section className="dashboard-section">
+      <div className="section-heading dashboard-section-heading">
+        <div><h2>School overview</h2><p>Your key information, clearly organised.</p></div>
+        <span className="today-pill"><span/> Overview</span>
+      </div>
+      <div className="stat-grid">{statData.map(([label,value,caption,Icon]:any,i)=><div className="stat-card" key={label}>
+        <div className={`stat-icon stat-${i}`}><Icon size={21}/></div>
+        <div className="stat-label">{label}</div><div className="stat-value">{value}</div><div className="stat-caption">{caption}</div>
+      </div>)}</div>
+    </section>
+
+    <section className="dashboard-section">
+      <div className="section-heading dashboard-section-heading">
+        <div><h2>Your workspace</h2><p>Quick access to the sections you use most.</p></div>
+      </div>
+      <div className="quick-grid">{quick.map((q,i)=>{const I=iconMap[q]||FileText;return <button className="quick-card" key={q} onClick={()=>setPage(q)}>
+        <div className={`quick-icon q-${i}`}><I size={22}/></div><b>{q}</b><small>{descriptions[q]||'Open this section and manage updates.'}</small><span className="quick-arrow">↗</span>
+      </button>})}</div>
+    </section>
+
+    <section className="panel activity-panel dashboard-activity">
+      <div className="panel-head"><div><h3>Today's activity</h3><p>Updates from your school workspace.</p></div><button className="text-btn" onClick={()=>setPage(role==='principal'?'Approvals':role==='parent'?'Notice Board':'My Submissions')}>View all <ArrowLeft size={14}/></button></div>
+      {activities.length>0?<div className="activity-list">{activities.map((entry:any,index:number)=><ActivityItem key={entry.item.id||index} icon={entry.icon} title={entry.item.title} detail={entry.item.subtitle||entry.item.category||entry.label} time={entry.item.status||entry.label} color={entry.color}/>)}</div>:<div className="dashboard-empty"><FileText size={22}/><span>No activity to show yet. New updates will appear here.</span></div>}
+    </section>
+    <div className="dashboard-footnote"><ShieldCheck size={16}/> Demo workspace · Sample records are stored in this browser until a live school database is connected.</div>
+  </>
 }
-function ActivityItem({icon:Icon,title,detail,time,color}:any){return <div className="activity-item"><div className={`activity-icon ${color}`}><Icon size={17}/></div><div className="activity-copy"><b>{title}</b><small>{detail}</small></div><time>{time}</time></div>}
+function ActivityItem({icon:Icon,title,detail,time,color}:any){return <div className="activity-item"><div className={`activity-icon ${color}`}><Icon size={19}/></div><div className="activity-copy"><b>{title}</b><small>{detail}</small></div><time>{time}</time></div>}
 
 function ModulePage({page,role,rows,allRows,search,setModal,changeStatus,setToast,store,telugu,setTelugu}:{page:string;role:Role;rows:RecordItem[];allRows:RecordItem[];search:string;setModal:(m:any)=>void;changeStatus:(i:RecordItem,s:string)=>void;setToast:(s:string)=>void;store:Store;telugu:boolean;setTelugu:(v:boolean)=>void}) {
   const isApproval=page==='Approvals', isNotice=page==='Notice Board', isLeave=page==='Apply Leave', isFee=page==='Fee Details'||page==='Fee Dues'||page==='Fees Status', isAttendance=page==='Attendance'||page==='View Attendance'
