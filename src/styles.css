@@ -316,3 +316,17 @@ input, textarea, select { font-size: 14px; }
   .dashboard-hero { align-items: flex-start; flex-direction: column; }
   .dashboard-hero-actions { align-self: flex-start; }
 }
+
+.school-avatar img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
+
+
+/* School identity logo assets */
+.brand-mark img{width:100%;height:100%;object-fit:contain;border-radius:inherit;padding:3px;background:#fff}
+.school-avatar img{width:100%;height:100%;object-fit:contain;border-radius:inherit;padding:2px;background:#fff}
+
+
+/* Sri Viswa identity in the workspace header */
+.topbar-brand{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:600}
+.topbar-brand img{width:32px;height:32px;object-fit:contain;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line)}
+.topbar-brand span{color:var(--ink);font-weight:800}
+.topbar-brand i{font-style:normal;color:#c1c9d6}

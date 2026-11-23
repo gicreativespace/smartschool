@@ -1,67 +1,44 @@
-# SchoolOS — Premium School PWA Starter
+# SmartSchool Master
 
-A premium, responsive school-management PWA prototype based on the supplied School PWA Master Blueprint.
+Reusable school management and communication PWA. The current demo identity is **Sri Viswa Educational Institutions**.
 
-## Included
-- Five role workspaces: Principal, Incharge, Teacher, Office Staff, Parent
-- Responsive premium dashboard UI, mobile navigation, light/dark theme
-- Role-based menus and demo login role selector
-- Overview cards, recent activity, quick actions
-- Approval workflow (approve/reject), notice board and local PNG poster generation
-- Diary, attendance, staff, students, fees, bus routes, exam schedule/marks, calendar, leave, events and Smart Learning sample modules
-- Add-record modal, search, CSV export, local browser persistence
-- Parent children switcher and Telugu-language toggle control
-- PWA manifest and basic service worker
-- GI Creative Space footer and WhatsApp contact link
+## Master architecture
+- One master repository is copied into a separate repository for each school.
+- Each school copy connects to its own independent Supabase project (Auth, database and Storage).
+- There is no shared database, school registry, or school-to-school data connection.
+- Keep school-specific identity in `src/config/school.config.ts`.
+- Keep each deployment's Supabase URL and anon key in environment variables; never commit secrets.
+
+## Current application
+- React + Vite + TypeScript.
+- Five demo workspaces: Principal, Incharge, Teacher, Office Staff and Parent.
+- Responsive dashboard and role-specific navigation.
+- Fictional demo records are stored locally in the browser for UI review.
+- Supabase client foundation and initial database migration are prepared, but authentication and live data workflows are not connected yet.
 
 ## Run locally
-Requirements: Node.js 18.18+ (Node 20 LTS recommended).
+Requirements: Node.js 20 LTS recommended.
 
 ```bash
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-Open the local URL shown by Vite.
+The app can still run in demo mode without Supabase credentials. To connect a school project, fill `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in the local environment or deployment environment settings.
 
-## Demo access
-The sign-in page is a UI demo. Enter any mobile number and PIN, choose a role, and continue. No credentials are verified.
+## Database setup
+See [supabase/README.md](supabase/README.md). Apply migrations in order to a new, dedicated Supabase project for that school.
 
-## Important: Supabase is intentionally NOT connected
-This repository is a frontend-first functional prototype. Data is stored in the current browser using localStorage. It is suitable for UI review and workflow discussion only.
+The initial migration creates the core school tables and enables Row Level Security. Policies are deny-by-default except a user's own profile read. This is intentional: do not use real student data until role-specific policies, account provisioning and workflows have been implemented and tested.
 
-Before real school use, the next phase must implement:
-1. Supabase Auth with secure account provisioning and password/PIN reset.
-2. PostgreSQL schema, migrations, indexes, constraints and Row Level Security.
-3. Server-side authorization and role/class/parent-child access checks.
-4. Auditable approval and fee transactions.
-5. Secure student data handling, backup and recovery.
-6. Proper file/photo strategy and external link validation.
-7. Production hosting, monitoring and privacy/security review.
+## Demo data and privacy
+All names and records in the prototype are fictional examples. Do not enter real student, parent or staff personal information until authentication, access controls, privacy review and backup/recovery are complete.
 
-The DOB arithmetic PIN scheme from the blueprint is not implemented because it is not safe for real authentication. Do not enter real student or staff personal data in this demo.
+## School branding
+Edit `src/config/school.config.ts` when making a new school copy. Replace the demo name, short name, initials, location, academic year, logo path and theme as needed. The Sri Viswa logo image itself still needs to be placed in the repository's public assets when the approved image file is available.
 
-## Notes
-- Sample records and dates are fictional/demo content.
-- Some modules are represented by a reusable record-management interface and need workflow-specific forms and validation in the implementation phase.
-- CSV export and poster generation run locally in the browser.
-- The service worker is a starter cache only, not a complete offline data-sync strategy.
-
-## Project layout
-```text
-school-pwa/
-├── public/
-│   ├── manifest.json
-│   └── sw.js
-├── src/
-│   ├── data/seed.ts
-│   ├── lib/storage.ts
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── styles.css
-├── .env.example
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
+## Development workflow
+- `main`: stable published version.
+- `master-development`: current development branch.
+- Test changes on the development branch before merging them into `main`.

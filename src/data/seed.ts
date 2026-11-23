@@ -1,7 +1,15 @@
 export type Role = 'principal' | 'incharge' | 'teacher' | 'office' | 'parent'
 export type RecordItem = { id: string; title: string; subtitle?: string; status?: string; date?: string; category?: string; amount?: number; [key: string]: any }
 
+// Native Telugu role labels for school users who prefer Telugu.
 export const roleNames: Record<Role,string> = {
+  principal:'ప్రధానోపాధ్యాయులు',
+  incharge:'తరగతి బాధ్యులు',
+  teacher:'ఉపాధ్యాయులు',
+  office:'కార్యాలయ సిబ్బంది',
+  parent:'తల్లిదండ్రులు'
+}
+export const roleNamesEnglish: Record<Role,string> = {
   principal:'Principal', incharge:'Incharge', teacher:'Teacher', office:'Office Staff', parent:'Parent'
 }
 export const roleMenus: Record<Role,string[]> = {
