@@ -4,7 +4,7 @@ export type RecordItem = { id: string; title: string; subtitle?: string; status?
 // Native Telugu role labels for school users who prefer Telugu.
 export const roleNames: Record<Role,string> = {
   principal:'ప్రధానోపాధ్యాయులు',
-  incharge:'విభాగ బాధ్యులు',
+  incharge:'తరగతి బాధ్యులు',
   teacher:'ఉపాధ్యాయులు',
   office:'కార్యాలయ సిబ్బంది',
   parent:'తల్లిదండ్రులు'
