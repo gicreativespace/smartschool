@@ -35,12 +35,18 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Verify production output
+      - name: Verify Vite production output
         run: |
+          set -eu
           test -f dist/index.html
           test -f dist/manifest.json
           test -d dist/assets
-          echo "Vite production build is ready for GitHub Pages."
+          grep -q 'src="/smartschool/assets/' dist/index.html
+          ! grep -q '/src/main.tsx' dist/index.html
+          grep -q 'href="/smartschool/manifest.json"' dist/index.html
+          echo "Verified production HTML:"
+          cat dist/index.html
+          echo "Verified manifest and compiled assets for /smartschool/."
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
