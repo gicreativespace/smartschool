@@ -5,11 +5,11 @@ export const roleNames: Record<Role,string> = {
   principal:'Principal', incharge:'Incharge', teacher:'Teacher', office:'Office Staff', parent:'Parent'
 }
 export const roleMenus: Record<Role,string[]> = {
-  principal:['Overview','Attendance','Approvals','Notice Board','E-Diary','Create Notice','My Submissions','Manage Staff','Students','Exam Schedule','Exam Syllabus','School Calendar','Smart Learning','Settings'],
-  incharge:['Overview','Class Room','Attendance','E-Diary','Announcements','Events & Achievements','My Submissions','Exam Schedule','School Timetable','School Calendar','Smart Learning','Apply Leave'],
-  teacher:['Overview','Announcements','Notice Board','E-Diary','My Submissions','Notes for Students','Exam Schedule','School Timetable','School Calendar','Smart Learning','Apply Leave'],
-  office:['Overview','Fee Details','Fee Dues','Exam Marks','Bus Routes','Notice Board','My Submissions','Smart Learning','Apply Leave'],
-  parent:['Overview','My Children','View Diary','View Attendance','Apply Leave','Fee Details','Fees Status','Bus Routes','Exam Schedule','Exam Syllabus','School Calendar','Notice Board','Class Notes','Events','Exam Marks','School Achievements','Smart Learning']
+  principal:['Overview','Approvals','E-Diary','Notice Board','My Submissions','Attendance','Create Notice','Manage Staff','Students','Exam Schedule','Exam Syllabus','School Calendar','Smart Learning','Settings'],
+  incharge:['Overview','Attendance','E-Diary','Notice Board','Announcements','My Submissions','Class Room','Events & Achievements','Exam Schedule','School Timetable','School Calendar','Smart Learning','Apply Leave'],
+  teacher:['Overview','E-Diary','My Submissions','Notice Board','Announcements','Notes for Students','Exam Schedule','School Timetable','School Calendar','Smart Learning','Apply Leave'],
+  office:['Overview','Fee Details','Fee Dues','Notice Board','My Submissions','Exam Marks','Bus Routes','Smart Learning','Apply Leave'],
+  parent:['Overview','My Children','View Diary','Notice Board','View Attendance','Apply Leave','Fee Details','Fees Status','Bus Routes','Exam Schedule','Exam Syllabus','School Calendar','Class Notes','Events','Exam Marks','School Achievements','Smart Learning']
 }
 const today = new Date().toISOString().slice(0,10)
 export const initialData: Record<string,RecordItem[]> = {
