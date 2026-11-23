@@ -7,5 +7,8 @@
   "display": "standalone",
   "background_color": "#F5F9FC",
   "theme_color": "#247db5",
-  "icons": []
+  "icons": [
+    { "src": "/smartschool/assets/school/pwa-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/smartschool/assets/school/pwa-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
 }
