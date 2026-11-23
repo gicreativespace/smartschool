@@ -1,5 +1,5 @@
 import { initialData, type RecordItem } from '../data/seed'
-const KEY = 'schoolos-demo-v1'
+const KEY = 'schoolos-demo-v2'
 export type Store = Record<string,RecordItem[]>
 export function loadStore(): Store {
   try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : structuredClone(initialData) }
